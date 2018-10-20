@@ -252,7 +252,7 @@ for i = 1:length(MassFlowRate)              %all mass flow rate values
                 A(i,j,k,l,F) = F_thrust;
                 A(i,j,k,l,IT) = It;
                 %print current config state to console           
-                fprintf('i: %d, j: %d, k: %d, l: %d\n', i,j,k,l);
+                %fprintf('i: %d, j: %d, k: %d, l: %d\n', i,j,k,l);
             end
         end
     end              
@@ -315,8 +315,7 @@ while(bool_graph == 0)
         
         figure(n)
         
-        if(strcmp(y,'DM'))
-            
+        if(strcmp(y,'DM'))      
             subplot(5,1,1)
                 plot(squeeze(A(indexMFR, indexISP, indexPM,:,DM)), squeeze(A(indexMFR, indexISP, indexPM,:,H)));
                 title('Height')
@@ -381,18 +380,42 @@ while(bool_graph == 0)
                 plot(squeeze(A(indexMFR, :, indexPM,indexDM,ISP)), squeeze(A(indexMFR, :, indexPM,indexDM,IT)));
                 title('Total Impulse')
         end
-        
-    end
-    x = input('Graph Data again? Enter Y/N\n', 's');
+        x = input('Graph Data again? Enter Y/N\n', 's');
+    end 
     if(~strcmp(x,'Y'))
         bool_graph = 1;
     end
     n = n+1;
 end
-%x = input('Export Data? Enter Y/N\n', 's');
-%if(strcmp(x,'Y'))
-%    
-%end
+%__________________________________________________________________________
+%
+%Export Data:
+warning('off','MATLAB:xlswrite:AddSheet');
+
+x = input('Export Data? Enter Y/N\n', 's');
+if(strcmp(x,'Y'))
+    header = {'MFR', 'Isp', 'm_prop', 'm_dry', '', 'height', 'maxVel', 't_burn', 'thrust', 'It'};
+    fileName = strcat(input('Enter File Name w/o extension: ', 's'), '.xlsx');
+    sheetName = input('Enter Sheet Name: ', 's');
+    xlswrite(fileName, header, sheetName, 'A10');
+    [MFR_data, Isp_data, PM_data, DM_data, H_data, MV_data, TB_data, F_data, IT_data] = createData(A);
+    xlswrite(fileName, MFR_data', sheetName, 'A11');
+    xlswrite(fileName, Isp_data', sheetName, 'B11');
+    xlswrite(fileName, PM_data', sheetName, 'C11');
+    xlswrite(fileName, DM_data', sheetName, 'D11');
+    xlswrite(fileName, H_data', sheetName, 'F11');
+    xlswrite(fileName, MV_data', sheetName, 'G11');
+    xlswrite(fileName, TB_data', sheetName, 'H11');
+    xlswrite(fileName, F_data', sheetName, 'I11');
+    xlswrite(fileName, IT_data', sheetName, 'J11');  
+end
+
+
+
+
+
+
+
 
 
 
