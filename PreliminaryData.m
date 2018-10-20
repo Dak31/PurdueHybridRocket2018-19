@@ -267,14 +267,20 @@ n = 1;
 x = input('Graph Data? Enter Y/N\n', 's');
 while(bool_graph == 0)
     if(strcmp(x,'Y'))
-        fprintf('\n\nThe data is modeled as follows:\n\n');
+        
+        fprintf('\n\nThe data is modeled as follows:\n');
         fprintf('Dry Mass: %.2f to %.2f by %.2f\n', DM_start, DM_end, DM_delta);
         fprintf('Prop Mass: %.2f to %.2f by %.2f\n', PM_start, PM_end, PM_delta);
         fprintf('Mass Flow Rate: %.2f to %.2f by %.2f\n', MFR_start, MFR_end, MFR_delta);
-        fprintf('Mass Flow Rate: %.2f to %.2f by %.2f\n', Isp_start, Isp_end, Isp_delta);
+        fprintf('Mass Flow Rate: %.2f to %.2f by %.2f\n\n', Isp_start, Isp_end, Isp_delta);
 
-        y = input('Select independat data, i.e. Select DM, PM, MFR, or Isp\n', 's');
-
+        y = input('Select independat data, i.e. Select DM, PM, MFR, or Isp:\n', 's');
+        
+        if(~strcmp(y,'DM') && ~strcmp(y,'PM') && ~strcmp(y,'MFR') &&~strcmp(y,'Isp'))
+            fprintf('ERROR - invalid input, exiting session\n');
+            return;
+        end
+        
         indexPM = 0; 
         indexDM = 0;
         indexMFR = 0;
